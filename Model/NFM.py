@@ -6,7 +6,9 @@ Wang Xiang et al. KGAT: Knowledge Graph Attention Network for Recommendation. In
 '''
 import tensorflow as tf
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 
 class NFM(object):
     def __init__(self, data_config, pretrain_data, args):
@@ -94,10 +96,10 @@ class NFM(object):
         # model parameters for NFM.
         self.weight_size_list = [self.emb_dim] + self.weight_size
         for i in range(self.n_layers):
-            all_weights['W_%d' %i] = tf.Variable(
-                initializer([self.weight_size_list[i], self.weight_size_list[i+1]]), name='W_%d' %i)
-            all_weights['b_%d' %i] = tf.Variable(
-                initializer([1, self.weight_size_list[i+1]]), name='b_%d' %i)
+            all_weights['W_%d' % i] = tf.Variable(
+                initializer([self.weight_size_list[i], self.weight_size_list[i + 1]]), name='W_%d' % i)
+            all_weights['b_%d' % i] = tf.Variable(
+                initializer([1, self.weight_size_list[i + 1]]), name='b_%d' % i)
 
         if self.model_type == 'fm':
             all_weights['h'] = tf.constant(1., tf.float32, [self.emb_dim, 1])

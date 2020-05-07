@@ -6,7 +6,9 @@ Wang Xiang et al. KGAT: Knowledge Graph Attention Network for Recommendation. In
 '''
 import tensorflow as tf
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 
 class BPRMF(object):
     def __init__(self, data_config, pretrain_data, args):
@@ -26,9 +28,9 @@ class BPRMF(object):
         self.verbose = args.verbose
 
         # Placeholder definition
-        self.users = tf.placeholder(tf.int32, shape=[None,], name='users')
-        self.pos_items = tf.placeholder(tf.int32, shape=[None,], name='pos_items')
-        self.neg_items = tf.placeholder(tf.int32, shape=[None,], name='neg_items')
+        self.users = tf.placeholder(tf.int32, shape=[None, ], name='users')
+        self.pos_items = tf.placeholder(tf.int32, shape=[None, ], name='pos_items')
+        self.neg_items = tf.placeholder(tf.int32, shape=[None, ], name='neg_items')
 
         # Variable definition
         self.weights = self._init_weights()
@@ -51,24 +53,24 @@ class BPRMF(object):
 
         self._statistics_params()
 
-
     def _init_weights(self):
         all_weights = dict()
 
         initializer = tf.contrib.layers.xavier_initializer()
 
         if self.pretrain_data is None:
-            all_weights['user_embedding'] = tf.Variable(initializer([self.n_users, self.emb_dim]), name='user_embedding')
-            all_weights['item_embedding'] = tf.Variable(initializer([self.n_items, self.emb_dim]), name='item_embedding')
+            all_weights['user_embedding'] = tf.Variable(initializer([self.n_users, self.emb_dim]),
+                                                        name='user_embedding')
+            all_weights['item_embedding'] = tf.Variable(initializer([self.n_items, self.emb_dim]),
+                                                        name='item_embedding')
             print('using xavier initialization')
         else:
             all_weights['user_embedding'] = tf.Variable(initial_value=self.pretrain_data['user_embed'], trainable=True,
-                                                    name='user_embedding', dtype=tf.float32)
+                                                        name='user_embedding', dtype=tf.float32)
             all_weights['item_embedding'] = tf.Variable(initial_value=self.pretrain_data['item_embed'], trainable=True,
-                                                    name='item_embedding', dtype=tf.float32)
+                                                        name='item_embedding', dtype=tf.float32)
             print('using pretrained initialization')
         return all_weights
-
 
     def _create_bpr_loss(self, users, pos_items, neg_items):
         pos_scores = tf.reduce_sum(tf.multiply(users, pos_items), axis=1)
@@ -83,9 +85,9 @@ class BPRMF(object):
 
         return mf_loss, reg_loss
 
-
     def _statistics_params(self):
-        # number of params
+        # number of parameters
+
         total_parameters = 0
         for variable in self.weights.values():
             shape = variable.get_shape()  # shape is an array of tf.Dimension
